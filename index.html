@@ -218,8 +218,8 @@
             </div>
 
             <div class="form-group">
-                <label for="rate" id="rateLabel">Rate of Interest (% per year)</label>
-                <input type="number" id="rate" min="0.1" step="any" required placeholder="e.g. 12">
+                <label for="rate" id="rateLabel">Rate of Interest (% per month)</label>
+                <input type="number" id="rate" min="0.1" step="any" required placeholder="e.g. 2">
             </div>
 
             <div class="form-group">
@@ -306,9 +306,9 @@
                 const diffTime = Math.abs(toDate - fromDate);
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 
-                // Calculate Simple Interest: (P * R * T) / 100 where T is time in years
-                const timeInYears = diffDays / 365;
-                const simpleInterest = (principal * rate * timeInYears) / 100;
+                // Calculate Simple Interest: (P * R * T) / 100 where T is time in months
+                const timeInMonths = (diffDays / 365) * 12;
+                const simpleInterest = (principal * rate * timeInMonths) / 100;
                 const totalAmount = principal + simpleInterest;
 
                 // Populate Results
@@ -332,7 +332,7 @@
                 en: {
                     title: "Interest Calculator",
                     principal: "Principal Amount (₹)",
-                    rate: "Rate of Interest (% per year)",
+                    rate: "Rate of Interest (% per month)",
                     fromDate: "From Date",
                     toDate: "To Date",
                     btn: "Calculate",
@@ -345,7 +345,7 @@
                 te: {
                     title: "వడ్డీ కాలిక్యులేటర్",
                     principal: "అసలు మొత్తం (₹)",
-                    rate: "వడ్డీ రేటు (సంవత్సరానికి %)",
+                    rate: "వడ్డీ రేటు (నెలకు %)",
                     fromDate: "నుండి (తేదీ)",
                     toDate: "వరకు (తేదీ)",
                     btn: "లెక్కించండి",
