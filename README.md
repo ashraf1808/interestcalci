@@ -30,10 +30,9 @@ A simple and user-friendly web application to calculate **Simple Interest** base
 
 ## 📌 Future Improvements
 
-* Language toggle (English / Telugu)
 * Better UI for rural users
 * Add compound interest option
 
 ## 👨‍💻 Author
 
-Ashraf
+Ashraf Pasha Mohammad
