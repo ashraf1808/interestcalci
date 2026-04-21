@@ -26,7 +26,7 @@ A simple and user-friendly web application to calculate **Simple Interest** base
 * CSS
 * JavaScript
 
-"C:\Users\ashra\OneDrive\Desktop\interestcalci\Screenshot 2026-04-21 220845.png"
+<img width="1109" height="900" alt="Screenshot 2026-04-21 220845" src="https://github.com/user-attachments/assets/ef75e004-b2b4-414f-b5fc-5defc0464a03" />
 
 ## 📌 Future Improvements
 
