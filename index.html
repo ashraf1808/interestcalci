@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Calculator</title>
+    <!-- Importing Inter font for clean typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border-color: #d1d5db;
+            --error-color: #ef4444;
+            --focus-ring: rgba(79, 70, 229, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .lang-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .lang-toggle:hover {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            border-color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-top: 8px;
+        }
+
+        .calculate-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .calculate-btn:active {
+            transform: scale(0.98);
+        }
+
+        .results {
+            margin-top: 24px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .result-item span:last-child {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .result-item.total {
+            margin-bottom: 0;
+            padding-top: 16px;
+            margin-top: 16px;
+            border-top: 1px dashed #cbd5e1;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+
+        .result-item.total span:last-child {
+            color: var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Mobile optimization */
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="titleText">Interest Calculator</h1>
+            <button class="lang-toggle" id="langToggle">EN / TE</button>
+        </div>
+
+        <form id="calculatorForm">
+            <div class="form-group">
+                <label for="principal" id="principalLabel">Principal Amount (₹)</label>
+                <input type="number" id="principal" min="1" step="any" required placeholder="e.g. 10000">
+            </div>
+
+            <div class="form-group">
+                <label for="rate" id="rateLabel">Rate of Interest (% per year)</label>
+                <input type="number" id="rate" min="0.1" step="any" required placeholder="e.g. 12">
+            </div>
+
+            <div class="form-group">
+                <label for="fromDate" id="fromDateLabel">From Date</label>
+                <input type="date" id="fromDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="toDate" id="toDateLabel">To Date</label>
+                <input type="date" id="toDate" required>
+                <div class="error-message" id="dateError">To Date cannot be earlier than From Date.</div>
+            </div>
+
+            <button type="submit" class="calculate-btn" id="calculateBtn">Calculate</button>
+        </form>
+
+        <div class="results" id="resultsBlock">
+            <div class="result-item">
+                <span id="durationLabel">Duration:</span>
+                <span id="durationResult">0 days</span>
+            </div>
+            <div class="result-item">
+                <span id="principalResLabel">Principal Amount:</span>
+                <span id="principalResult">₹0.00</span>
+            </div>
+            <div class="result-item">
+                <span id="interestLabel">Total Interest:</span>
+                <span id="interestResult">₹0.00</span>
+            </div>
+            <div class="result-item total">
+                <span id="totalLabel">Total Amount:</span>
+                <span id="totalResult">₹0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('calculatorForm');
+            const principalInput = document.getElementById('principal');
+            const rateInput = document.getElementById('rate');
+            const fromDateInput = document.getElementById('fromDate');
+            const toDateInput = document.getElementById('toDate');
+            
+            const resultsBlock = document.getElementById('resultsBlock');
+            const durationResult = document.getElementById('durationResult');
+            const principalResult = document.getElementById('principalResult');
+            const interestResult = document.getElementById('interestResult');
+            const totalResult = document.getElementById('totalResult');
+
+            const dateError = document.getElementById('dateError');
+
+            // Format as Indian Rupee
+            const formatCurrency = (value) => {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    maximumFractionDigits: 2
+                }).format(value);
+            };
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Reset error message and hide results initially on new submit
+                dateError.style.display = 'none';
+                resultsBlock.classList.remove('show');
+
+                const principal = parseFloat(principalInput.value);
+                const rate = parseFloat(rateInput.value);
+                const fromDate = new Date(fromDateInput.value);
+                const toDate = new Date(toDateInput.value);
+
+                // Reset time part of dates to ensure accurate day calculation
+                fromDate.setHours(0, 0, 0, 0);
+                toDate.setHours(0, 0, 0, 0);
+
+                if (toDate < fromDate) {
+                    dateError.style.display = 'block';
+                    return;
+                }
+
+                // Calculate difference in days
+                const diffTime = Math.abs(toDate - fromDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                // Calculate Simple Interest: (P * R * T) / 100 where T is time in years
+                const timeInYears = diffDays / 365;
+                const simpleInterest = (principal * rate * timeInYears) / 100;
+                const totalAmount = principal + simpleInterest;
+
+                // Populate Results
+                durationResult.textContent = `${diffDays} days`;
+                principalResult.textContent = formatCurrency(principal);
+                interestResult.textContent = formatCurrency(simpleInterest);
+                totalResult.textContent = formatCurrency(totalAmount);
+
+                // Trigger reflow to restart animation if it was already showing
+                void resultsBlock.offsetWidth;
+                
+                resultsBlock.classList.add('show');
+            });
+
+            // Language Toggle Placeholder Logic
+            const langToggle = document.getElementById('langToggle');
+            let isTelugu = false;
+
+            // Simple dictionary for placeholder localization
+            const translations = {
+                en: {
+                    title: "Interest Calculator",
+                    principal: "Principal Amount (₹)",
+                    rate: "Rate of Interest (% per year)",
+                    fromDate: "From Date",
+                    toDate: "To Date",
+                    btn: "Calculate",
+                    dur: "Duration:",
+                    prin: "Principal Amount:",
+                    int: "Total Interest:",
+                    tot: "Total Amount:",
+                    dateErr: "To Date cannot be earlier than From Date."
+                },
+                te: {
+                    title: "వడ్డీ కాలిక్యులేటర్",
+                    principal: "అసలు మొత్తం (₹)",
+                    rate: "వడ్డీ రేటు (సంవత్సరానికి %)",
+                    fromDate: "నుండి (తేదీ)",
+                    toDate: "వరకు (తేదీ)",
+                    btn: "లెక్కించండి",
+                    dur: "వ్యవధి:",
+                    prin: "అసలు మొత్తం:",
+                    int: "మొత్తం వడ్డీ:",
+                    tot: "మొత్తం:",
+                    dateErr: "ముగింపు తేదీ ప్రారంభ తేదీ కన్నా ముందు ఉండకూడదు."
+                }
+            };
+
+            langToggle.addEventListener('click', () => {
+                isTelugu = !isTelugu;
+                const lang = isTelugu ? 'te' : 'en';
+                
+                document.getElementById('titleText').textContent = translations[lang].title;
+                document.getElementById('principalLabel').textContent = translations[lang].principal;
+                document.getElementById('rateLabel').textContent = translations[lang].rate;
+                document.getElementById('fromDateLabel').textContent = translations[lang].fromDate;
+                document.getElementById('toDateLabel').textContent = translations[lang].toDate;
+                document.getElementById('calculateBtn').textContent = translations[lang].btn;
+                document.getElementById('durationLabel').textContent = translations[lang].dur;
+                document.getElementById('principalResLabel').textContent = translations[lang].prin;
+                document.getElementById('interestLabel').textContent = translations[lang].int;
+                document.getElementById('totalLabel').textContent = translations[lang].tot;
+                document.getElementById('dateError').textContent = translations[lang].dateErr;
+            });
+        });
+    </script>
+</body>
+</html>
